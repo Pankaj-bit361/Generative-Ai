@@ -38,7 +38,7 @@ app.post("/jokes/:data",async (req,res)=>{
       const completion = await openai.createCompletion({
         model:"text-davinci-003",
         prompt:`please generate a random ${data} line by line `,
-        max_tokens: 200,
+        max_tokens: 2048,
       });
       res.send(completion.data.choices[0].text);
     
@@ -60,7 +60,7 @@ app.post("/code/:data",async (req,res)=>{
       const completion = await openai.createCompletion({
         model:"text-davinci-003",
         prompt:`Convert this code ${code} into ${data}`,
-        max_tokens: 200,
+        max_tokens: 2048,
       });
       res.send(completion.data.choices[0].text);
     
@@ -80,7 +80,7 @@ app.post("/debug",async (req,res)=>{
       const completion = await openai.createCompletion({
         model:"text-davinci-003",
         prompt:`Debug this code ${code} if there is error in it `,
-        max_tokens: 200,
+        max_tokens: 2048,
       });
       res.send(completion.data.choices[0].text);
     
@@ -100,7 +100,7 @@ app.post("/quality",async (req,res)=>{
       const completion = await openai.createCompletion({
         model:"text-davinci-003",
         prompt:`Check  this code ${code} quality is good or not `,
-        max_tokens: 200,
+        max_tokens: 2048,
       });
       res.send(completion.data.choices[0].text);
     
