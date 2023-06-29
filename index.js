@@ -37,7 +37,7 @@ app.post("/:jokes",async (req,res)=>{
    
       const completion = await openai.createCompletion({
         model:"text-davinci-003",
-        prompt:`please generate a random ${jokes}`,
+        prompt:`please generate a random ${jokes} line by line `,
         max_tokens: 200,
       });
       res.send(completion.data.choices[0].text);
