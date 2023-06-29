@@ -30,14 +30,14 @@ app.get("/",(req,res)=>{
 })
 
 
-app.post("/jokes",async (req,res)=>{
-  let {jokes} = req.params
+app.post("/jokes/:data",async (req,res)=>{
+  let {data} = req.params
  
   try {
    
       const completion = await openai.createCompletion({
         model:"text-davinci-003",
-        prompt:`please generate a random ${jokes} line by line `,
+        prompt:`please generate a random ${data} line by line `,
         max_tokens: 200,
       });
       res.send(completion.data.choices[0].text);
