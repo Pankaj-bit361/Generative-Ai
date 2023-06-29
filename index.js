@@ -30,7 +30,7 @@ app.get("/",(req,res)=>{
 })
 
 
-app.post("/:jokes",async (req,res)=>{
+app.post("/jokes",async (req,res)=>{
   let {jokes} = req.params
  
   try {
