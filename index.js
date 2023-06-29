@@ -1,59 +1,121 @@
+// const express = require('express');
+// const { Configuration, OpenAIApi } = require("openai");
+
+// require("dotenv").config();
+// const app = express();
+
+// const port=3000
+
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY
+// });
+// const openai = new OpenAIApi(configuration);
+
+// app.get('/send', async (req, res) => {
+//   const { data } = req.body;
+
+//   try {
+//     const completion = await openai.createCompletion({
+//                 model:"text-davinci-003",
+//                 prompt:data
+//               });
+//               res.send(completion.data.choices[0].text);
+//   } catch (error) {
+//     res.send("error");
+//   }
+// });
+
+
+
+
+
+const express = require('express');
 const { Configuration, OpenAIApi } = require("openai");
-const readlineSync = require("readline-sync");
+const cors=require("cors")
 require("dotenv").config();
+const app = express();
+
+
+    
+const configuration = new Configuration({
+  apiKey:'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'
+});
+app.use(cors())
+
+
+app.use(express.json())
 
 
 
 
+const openai = new OpenAIApi(configuration)
+app.use(express.json());
 
-(async () => {
+
+app.get("/",(req,res)=>{
+  res.send("hello")
+})
+
+app.post("/code/:data",async (req,res)=>{
+  let {data} = req.params
+  let {code}=req.body   
+  console.log(code,data)
+  try {
    
-  
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-  const openai = new OpenAIApi(configuration);
-
-  const history = [];
-
-  while (true) {
-    const user_input = readlineSync.question("Your input: ");
-
-    const messages = [];
-    for (const [input_text, completion_text] of history) {
-      messages.push({ role: "user", content: input_text });
-      messages.push({ role: "assistant", content: completion_text });
-    }
-
-    messages.push({ role: "user", content: user_input });
-
-    try {
-      const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
-        messages: messages,
+      const completion = await openai.createCompletion({
+        model:"text-davinci-003",
+        prompt:`Convert this code ${code} into ${data}`,
+        max_tokens: 200,
       });
-
-      const completion_text = completion.data.choices[0].message.content;
-      console.log(completion_text);
-
-      history.push([user_input, completion_text]);
-
-      const user_input_again = readlineSync.question(
-        "\nWould you like to continue the conversation? (Y/N)"
-      );
-      if (user_input_again.toUpperCase() === "N") {
-        return;
-      } else if (user_input_again.toUpperCase() !== "Y") {
-        console.log("Invalid input. Please enter 'Y' or 'N'.");
-        return;
-      }
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.status);
-        console.log(error.response.data);
-      } else {
-        console.log(error.message);
-      }
-    }
+      res.send(completion.data.choices[0].text);
+    
+  } catch (error) {
+    res.send(
+      'error'
+    )
   }
-})();
+})
+
+app.post("/debug",async (req,res)=>{
+
+  let {code}=req.body   
+  console.log(code)
+  try {
+   
+      const completion = await openai.createCompletion({
+        model:"text-davinci-003",
+        prompt:`Debug this code ${code} if there is error in it `,
+        max_tokens: 200,
+      });
+      res.send(completion.data.choices[0].text);
+    
+  } catch (error) {
+    res.send(
+      'error'
+    )
+  }
+})
+
+app.post("/quality",async (req,res)=>{
+
+  let {code}=req.body   
+  console.log(code)
+  try {
+   
+      const completion = await openai.createCompletion({
+        model:"text-davinci-003",
+        prompt:`Check  this code ${code} quality is good or not `,
+        max_tokens: 200,
+      });
+      res.send(completion.data.choices[0].text);
+    
+  } catch (error) {
+    res.send(
+      'error'
+    )
+  }
+})
+app.listen(process.env.port, () => {
+  console.log(`Server listening on port ${process.env.port}`);
+});
+    
