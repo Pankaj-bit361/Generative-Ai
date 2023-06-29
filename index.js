@@ -38,7 +38,7 @@ const app = express();
 
     
 const configuration = new Configuration({
-  apiKey:'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'
+  apiKey:process.env.OPENAI_API_KEY
 });
 app.use(cors())
 
