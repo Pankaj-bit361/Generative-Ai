@@ -1,30 +1,3 @@
-// const express = require('express');
-// const { Configuration, OpenAIApi } = require("openai");
-
-// require("dotenv").config();
-// const app = express();
-
-// const port=3000
-
-// const configuration = new Configuration({
-//   apiKey: process.env.OPENAI_API_KEY
-// });
-// const openai = new OpenAIApi(configuration);
-
-// app.get('/send', async (req, res) => {
-//   const { data } = req.body;
-
-//   try {
-//     const completion = await openai.createCompletion({
-//                 model:"text-davinci-003",
-//                 prompt:data
-//               });
-//               res.send(completion.data.choices[0].text);
-//   } catch (error) {
-//     res.send("error");
-//   }
-// });
-
 
 
 
@@ -55,6 +28,28 @@ app.use(express.json());
 app.get("/",(req,res)=>{
   res.send("hello")
 })
+
+
+app.post("/:jokes",async (req,res)=>{
+  let {jokes} = req.params
+ 
+  try {
+   
+      const completion = await openai.createCompletion({
+        model:"text-davinci-003",
+        prompt:`please generate a random ${jokes}`,
+        max_tokens: 200,
+      });
+      res.send(completion.data.choices[0].text);
+    
+  } catch (error) {
+    res.send(
+      'error'
+    )
+  }
+})
+
+
 
 app.post("/code/:data",async (req,res)=>{
   let {data} = req.params
