@@ -51,6 +51,11 @@ app.use(express.json())
 const openai = new OpenAIApi(configuration)
 app.use(express.json());
 
+
+app.get("/",(req,res)=>{
+  res.send("hello")
+})
+
 app.post("/code/:data",async (req,res)=>{
   let {data} = req.params
   let {code}=req.body   
